@@ -1,5 +1,6 @@
 <?php
 include 'db.php';
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $userId = $_SESSION['user_id'];
@@ -14,11 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-        
+
         if (password_verify($current_password, $user['parola'])) {
             if ($new_password === $confirm_password) {
                 $hashed_new_password = password_hash($new_password, PASSWORD_DEFAULT);
-                
+
                 $update_stmt = $conn->prepare("UPDATE kullanicilar SET parola = ? WHERE id = ?");
                 $update_stmt->bind_param("si", $hashed_new_password, $userId);
                 $update_stmt->execute();
@@ -27,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 echo '<h3>Şifre başarıyla değiştirildi.</h3>';
                 echo '<p>3 saniye içinde ana sayfaya yönlendirileceksiniz...</p>';
                 echo '</div>';
-                
+
                 echo '<script type="text/javascript">
                         setTimeout(function() {
                             window.location.href = "anasayfa.php";

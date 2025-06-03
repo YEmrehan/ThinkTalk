@@ -1,6 +1,6 @@
 <?php
 include 'db.php';
-
+session_start();
 if (isset($_POST['kullanici_id'])) {
     $kullanici_id = $_POST['kullanici_id'];
 

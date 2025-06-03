@@ -1,5 +1,6 @@
 <?php
 include 'db.php';
+session_start();
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: giris.php');
@@ -16,11 +17,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute();
 
     if ($stmt->affected_rows > 0) {
-        echo "Profil başarıyla güncellendi.";
+        header('Location: profil.php?guncelle=ok');
     } else {
-        echo "Profil güncellenemedi.";
+        header('Location: profil.php?guncelle=no');
     }
-
-    header('Location: profil.php');
     exit();
 }

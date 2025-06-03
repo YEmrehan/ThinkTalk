@@ -1,5 +1,6 @@
 <?php
 include 'db.php';
+session_start();
 
 if (isset($_POST['yorum_id'])) {
     $yorum_id = $_POST['yorum_id'];

@@ -1,0 +1,44 @@
+services:
+  web:
+    build: .
+    container_name: php-apache_tt
+    ports:
+      - "8080:80"
+    volumes:
+        - ./src:/var/www/html
+        - ./vendor:/var/www/vendor
+        - ./composer.json:/var/www/composer.json
+        - ./composer.lock:/var/www/composer.lock
+        - ./.env:/var/www/html/.env
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    container_name: mysql-db_tt
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_tt
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: ${MYSQL_USER}
+      PMA_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      UPLOAD_LIMIT: 12M
+
+volumes:
+  db_data:

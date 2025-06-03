@@ -1,5 +1,6 @@
 <?php
 include 'db.php';
+session_start();
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: giris.php');
@@ -20,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $stmt = $conn->prepare("INSERT INTO yorumlar (konu_id, kullanici_id, yorum) VALUES (?, ?, ?)");
     $stmt->bind_param("iis", $konu_id, $kullanici_id, $yorum);
-    if ($stmt->execute()) { 
+    if ($stmt->execute()) {
         header("Location: konubak.php?id=" . $konu_id);
         exit();
     } else {

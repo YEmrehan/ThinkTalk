@@ -1,3 +1,7 @@
+<?php
+include 'db.php';
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="tr-TR">
 
@@ -25,18 +29,20 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="profil.php"><i class="fas fa-user"></i> Profil</a></li>
-                    <li class="nav-item"><a class="nav-link" href="konuac.php"><i class="fas fa-plus"></i> Konu aç</a></li>
-                    <li class="nav-item"><a class="nav-link" href="konubak.php"><i class="fas fa-eye"></i> Konulara bak</a></li>
+                    <li class="nav-item"><a class="nav-link" href="profil.php"><i class="fas fa-user"></i> Profil</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="konuac.php"><i class="fas fa-plus"></i> Konu aç</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="konubak.php"><i class="fas fa-eye"></i> Konulara
+                            bak</a></li>
                     <li class="nav-item"><a class="nav-link" href="admin.php"><i class="fas fa-cog"></i> Admin</a></li>
-                    <li class="nav-item"><a class="nav-link" href="kullanicilar.php"><i class="fas fa-users"></i> Kayıtlı Kullanıcılar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="kullanicilar.php"><i class="fas fa-users"></i>
+                            Kayıtlı Kullanıcılar</a></li>
                 </ul>
             </div>
         </nav>
 
         <?php
-        include 'db.php';
-
         if (!isset($_SESSION['user_id'])) {
             header('Location: giris.php');
             exit();
@@ -48,14 +54,14 @@
         $yetki_stmt->execute();
         $yetki_result = $yetki_stmt->get_result();
         $yetki = $yetki_result->fetch_assoc()['yetki'];
-        
+
         if ($yetki != 2) {
             header('Location: anasayfa.php');
             exit();
         }
-        
+
         $konu_stmt = $conn->
-        prepare("SELECT k.*, u.kullanici_adi AS konuyu_acan FROM konular k 
+            prepare("SELECT k.*, u.kullanici_adi AS konuyu_acan FROM konular k 
         JOIN kullanicilar u ON k.kullanici_id = u.id ORDER BY k.created_at DESC");
 
         $konu_stmt->execute();
@@ -73,7 +79,7 @@
             echo "<div class='card-body'><p>" . htmlspecialchars($konu['aciklama']) . "</p></div>";
 
             $yorum_stmt = $conn->
-            prepare("SELECT y.*, u.kullanici_adi AS yorum_yapan FROM yorumlar y
+                prepare("SELECT y.*, u.kullanici_adi AS yorum_yapan FROM yorumlar y
             JOIN kullanicilar u ON y.kullanici_id = u.id WHERE konu_id = ? ORDER BY y.created_at DESC");
 
             $yorum_stmt->bind_param("i", $konu['id']);
@@ -86,8 +92,8 @@
                         <input type='hidden' name='yorum_id' value='" . $yorum['id'] . "'>
                         <button type='submit' class='btn btn-danger btn-sm'>Sil</button>
                     </form>
-                    " . htmlspecialchars($yorum['yorum']) . 
-                    " - " . htmlspecialchars($yorum['yorum_yapan']) . 
+                    " . htmlspecialchars($yorum['yorum']) .
+                    " - " . htmlspecialchars($yorum['yorum_yapan']) .
                     " (" . $yorum['created_at'] . ")
                   </li>";
             }
@@ -104,7 +110,7 @@
         ?>
     </div>
     <div class="div2" id="notification">
-    Admin, Panele Hoşgeldin
+        Admin, Panele Hoşgeldin
     </div>
     <script src="bootstrap/jquery-3.7.1.min.js"></script>
     <script src="bootstrap/bootstrap.min.js"></script>
