@@ -1,10 +1,10 @@
-# ThinkTalk: Empowering Conversations in the Digital Age 🌟
+# ThinkTalk 🌟
 
 **ThinkTalk** is a vibrant, feature-rich discussion forum designed to foster meaningful interactions and build thriving online communities. Built with cutting-edge web technologies and a seamless user experience in mind, ThinkTalk is your go-to platform for dynamic discussions, idea sharing, and collaboration.
 
 ---
 
-## 🚀 Why Choose ThinkTalk?
+## 🚀 Features Overview
 
 ThinkTalk isn't just a forum; it's a platform designed to connect minds, empower dialogue, and inspire innovation. Here's what makes it exceptional:
 
@@ -27,6 +27,7 @@ ThinkTalk isn't just a forum; it's a platform designed to connect minds, empower
 - **Secure & Reliable:**
   - Secure user authentication and role-based permissions ensure privacy and control.
   - Regular updates to adapt to evolving user needs and technological advancements.
+  - Environment variables handled securely with **vlucas/phpdotenv** for configuration.
 
 ---
 
@@ -77,8 +78,59 @@ ThinkTalk is continuously evolving! Here’s what’s on the horizon:
 
 ---
 
-## 🎯 Why Wait? Build Your Community Today!
+## 🐳 Docker Support & Setup
 
-**ThinkTalk** isn’t just software; it’s a platform to bring people together, spark conversations, and cultivate knowledge. Perfect for individuals, businesses, or organizations looking to establish a powerful online presence.
+ThinkTalk is fully containerized with Docker for seamless deployment and development consistency.
 
-💡 **Empower discussions. Inspire collaboration. Choose ThinkTalk.**
+### Requirements
+
+- Docker & Docker Compose installed on your system.
+
+### Quick Start
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/yourusername/thinktalk.git
+   cd thinktalk
+   ```
+
+2. **Create `.env` file**
+
+   Copy the example environment file and update your credentials:
+
+   ```bash
+   cp .env.example .env
+   # Edit .env as needed, especially DB settings
+   ```
+
+3. **Build and start containers**
+
+   ```bash
+   docker-compose up --build -d
+   ```
+
+4. **Access the app**
+
+   - Forum: [http://localhost:8080](http://localhost:8080)  
+   - phpMyAdmin: [http://localhost:8081](http://localhost:8081)
+
+---
+
+### Docker Compose Overview
+
+- **web:** PHP + Apache container serving the app.  
+- **db:** MySQL 5.7 database container.  
+- **phpmyadmin:** phpMyAdmin container for easy DB management.
+
+---
+
+### Volume Mounts
+
+- `./src` → `/var/www/html`: Your application source code.  
+- `./vendor` → `/var/www/vendor`: PHP dependencies installed by Composer.  
+- `./.env` → `/var/www/html/.env`: Environment variables injected into the app.
+
+---
+
+> **Note:** Make sure to keep your `.env` file secure and do not commit it to public repositories.

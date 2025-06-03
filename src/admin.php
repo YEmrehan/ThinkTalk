@@ -1,6 +1,29 @@
 <?php
 include 'db.php';
 session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: giris.php');
+    exit();
+}
+
+$userId = $_SESSION['user_id'];
+$yetki_stmt = $conn->prepare("SELECT yetki FROM kullanicilar WHERE id = ?");
+$yetki_stmt->bind_param("i", $userId);
+$yetki_stmt->execute();
+$yetki_result = $yetki_stmt->get_result();
+$yetki = $yetki_result->fetch_assoc()['yetki'];
+
+if ($yetki != 2) {
+    header('Location: anasayfa.php');
+    exit();
+}
+
+$konu_stmt = $conn->
+    prepare("SELECT k.*, u.kullanici_adi AS konuyu_acan FROM konular k 
+        JOIN kullanicilar u ON k.kullanici_id = u.id ORDER BY k.created_at DESC");
+
+$konu_stmt->execute();
+$konu_result = $konu_stmt->get_result();
 ?>
 <!DOCTYPE html>
 <html lang="tr-TR">
@@ -43,29 +66,6 @@ session_start();
         </nav>
 
         <?php
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: giris.php');
-            exit();
-        }
-
-        $userId = $_SESSION['user_id'];
-        $yetki_stmt = $conn->prepare("SELECT yetki FROM kullanicilar WHERE id = ?");
-        $yetki_stmt->bind_param("i", $userId);
-        $yetki_stmt->execute();
-        $yetki_result = $yetki_stmt->get_result();
-        $yetki = $yetki_result->fetch_assoc()['yetki'];
-
-        if ($yetki != 2) {
-            header('Location: anasayfa.php');
-            exit();
-        }
-
-        $konu_stmt = $conn->
-            prepare("SELECT k.*, u.kullanici_adi AS konuyu_acan FROM konular k 
-        JOIN kullanicilar u ON k.kullanici_id = u.id ORDER BY k.created_at DESC");
-
-        $konu_stmt->execute();
-        $konu_result = $konu_stmt->get_result();
         while ($konu = $konu_result->fetch_assoc()) {
             echo "<div class='card mb-3'>";
             echo "<div class='card-header'>
