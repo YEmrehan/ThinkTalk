@@ -91,8 +91,8 @@ ThinkTalk is fully containerized with Docker for seamless deployment and develop
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/thinktalk.git
-   cd thinktalk
+   git clone https://github.com/YEmrehan/ThinkTalk.git
+   cd ThinkTalk
    ```
 
 2. **Create `.env` file**
