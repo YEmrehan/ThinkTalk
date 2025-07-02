@@ -11,3 +11,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN a2enmod rewrite
 
 WORKDIR /var/www/html
+
+RUN apt-get update && apt-get install -y wget
+RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.2.1/phpMyAdmin-5.2.1-all-languages.zip \
+    && unzip phpMyAdmin-5.2.1-all-languages.zip \
+    && mv phpMyAdmin-5.2.1-all-languages /var/www/html/phpmyadmin \
+    && rm phpMyAdmin-5.2.1-all-languages.zip
